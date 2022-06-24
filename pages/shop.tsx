@@ -1,8 +1,9 @@
 import type { GetServerSideProps, NextPage } from 'next'
+import { FC } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import CardItem from '../components/Ui/CardItem'
 
-const Home: NextPage = ({data}: any) => {
+const Shop: FC = ({data}: any) => {
   return (
     <Container fluid className='px-0'>
       <Container fluid className='px-0'>
@@ -34,5 +35,4 @@ console.log(data)
   // Pass data to the page via props
   return { props: { data } }
 }
-
-export default Home
+export default Shop
