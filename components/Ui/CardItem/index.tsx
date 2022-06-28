@@ -2,10 +2,14 @@ import Link from 'next/link'
 import React from 'react'
 import { Card } from 'react-bootstrap'
 
+
+
+
 const CardItem = ({ props }: any) => {
   const { slug, name, information, devise, price, id } = props
 
   return (
+    
     <Card style={{ width: '100%' }} className='text-start h-100'>
       <Card.Img variant='top' src={slug} />
       <Card.Body>

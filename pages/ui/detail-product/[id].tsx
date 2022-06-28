@@ -1,17 +1,61 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap'
-
 import { useRouter } from 'next/router'
-import Link from 'next/link'
+import create from 'zustand'
+import { GetServerSideProps } from 'next'
+
+
 
 const DetailProduct = ({ blog }: any) => {
-  const [qtyArticle, setQtyArticle] = React.useState<any>(1)
 
+  const {slug, name, price, devise, description} = blog
+
+  const [qtyArticle, setQtyArticle] = React.useState<any>(1)
+  const [isAddItem, setIsAddItem] = React.useState<boolean>(true);
   const router: any = useRouter()
+
+
+  // const saveCart = localStorage.getItem('cart');
+  
+  // const  [cart, setCart] = React.useState<any>(saveCart ? JSON.parse(saveCart) : []);
+  const  [cart, setCart] = React.useState<any>([]);
+  const  [panier, setPanier] = React.useState<any>([]);
+
+
+
+ 
+
+  // React.useEffect(() => {
+  //   localStorage.setItem('cart', JSON.stringify(cart))
+  // }, [cart]);
+
+
   const { id } = router.query
   if (!router.isFallback && !blog?.id) {
     return 'error 404'
   }
+
+
+const addToCart = (name: any, price: any, qty: any, slug: any, setCart: any) => {
+  const currentProdAdded = cart.find((prod: any) => prod.name === name)
+console.log(currentProdAdded)
+  if(currentProdAdded) {
+    const cartFilteredCurrentProd = cart.filter((prod: any) => prod.name !== name)
+    console.log(name)
+    setCart([
+      ...cartFilteredCurrentProd,
+      {name, price, slug, amount: currentProdAdded.amount = qty}
+    ])
+
+  }else{
+    setCart([...cart, {name, price, slug, amount: qty}])
+
+console.log(cart)
+
+}
+
+}
+console.log(cart)
 
   const subtrQty = () => {
     if (qtyArticle > 1) {
@@ -21,7 +65,8 @@ const DetailProduct = ({ blog }: any) => {
   const addQty = () => {
     setQtyArticle(qtyArticle + 1)
   }
-  console.log(qtyArticle)
+
+
   return (
     <Container fluid className='px-0'>
       <Container fluid className='text-center py-5'>
@@ -33,28 +78,28 @@ const DetailProduct = ({ blog }: any) => {
               <Row>
                 <Col xs={12} md={7} lg={8} className='m-auto'>
                   <Card className='text-start h-100 border-0'>
-                    <Card.Img variant='top' src={blog.slug} />
+                    <Card.Img variant='top' src={slug} />
                   </Card>
                 </Col>
                 <Col xs={12} md={5} lg={4} className=''>
                   <Card className='border-0 text-start m-auto'>
                     <Card.Body className=''>
                       <Card.Title>
-                        <h1>{blog.name}</h1>
+                        <h1>{name}</h1>
                       </Card.Title>
                       <hr />
                       <Card.Title>
-                        {blog.price} {blog.devise}
+                        {price} {devise}
                       </Card.Title>
                       <Card.Text>{blog.description}</Card.Text>
                     </Card.Body>
-                    <div className='px-3 py-4'>
-                      <Link href={`/ui/detail-product/${id}`}>
-                        <a className='btn btn-sm btn-outline-dark rounded-pill'>
+                    <div className='px-3 py-4' onClick={() => addToCart(name, price, qtyArticle, slug, setCart)}>
+                        <div className='btn btn-sm btn-outline-dark rounded-pill'>
                           Ajouter au panier
-                        </a>
-                      </Link>
+                        </div>
                     </div>
+                    
+                    
                     <Col xs={12} md={12} lg={8} xl={6}>
                       <InputGroup className='mb-3'>
                         <InputGroup.Text onClick={subtrQty}>-</InputGroup.Text>
@@ -109,5 +154,10 @@ export async function getStaticPaths() {
     fallback: false,
   }
 }
+
+
+
+
+
 
 export default DetailProduct

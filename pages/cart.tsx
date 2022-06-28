@@ -16,12 +16,31 @@ import { GetServerSideProps } from 'next';
 
 const Cart = ({data}: any) => {
     const [empty, setEmpty] = React.useState<boolean>(false);
-    console.log(data)
-
+    // const [panier, setPanier] = React.useState<any>();
     // const total = data.reduce(
 	// 	(acc, plantType) => acc + plantType.amount * plantType.price,
 	// 	0
 	// )
+// const panier = JSON.parse(localStorage.getItem("cart") || "")
+//  setPanier(JSON.parse(localStorage.getItem("cart") || ""))
+
+
+
+
+//  const subtrQty = () => {
+//     if (qtyArticle > 1) {
+//       setQtyArticle(qtyArticle - 1)
+//     }
+//   }
+//   const addQty = () => {
+//     setQtyArticle(qtyArticle + 1)
+//   }
+
+
+
+
+
+
 
 
 
@@ -59,11 +78,11 @@ const Cart = ({data}: any) => {
 
                   <td className="col-1 pt-5">
                   <Card className='text-start h-100 border-0'>
-                    <Card.Img src={prod.slug} />
+                    <Card.Img src={prod.slug} alt="icon"/>
                   </Card>
                     {/* <Image src={prod.slug} width={108} height={108} alt="icon" /> */}
                   </td>
-                  <td className="col-4 ps-4 pt-5">Mark</td>
+                  <td className="col-4 ps-4 pt-5">{prod.name}</td>
                   <td className=" col-2 me-5"></td>
                   <td className="col-3 ps-4 pt-5">
                     <Row>
@@ -73,7 +92,7 @@ const Cart = ({data}: any) => {
                           <InputGroup.Text>-</InputGroup.Text>
                           <Form.Control
                             aria-label="Amount (to the nearest dollar)"
-                            placeholder="1"
+                            placeholder={prod.amount}
                             className="text-center"
                           />
                           <InputGroup.Text>+</InputGroup.Text>
@@ -115,7 +134,6 @@ const Cart = ({data}: any) => {
                   type="radio"
                   variant="dark"
                   className="col-12"
-                  //   checked="false"
                   value="1"
                 >
                   Check out
@@ -143,7 +161,7 @@ const Cart = ({data}: any) => {
                       //   checked="false"
                       value='1'
                     >
-                      <Link href='/'>
+                      <Link href='/shop'>
                         <a className='text-decoration-none text-white'>Continue shopping</a>
                       </Link>
                     </ToggleButton>
@@ -166,7 +184,7 @@ const Cart = ({data}: any) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     // Fetch data from external API
-    const res = await fetch(`https://62a28042cd2e8da9b008d372.mockapi.io/productData`)
+    const res = await fetch(`https://62a28042cd2e8da9b008d372.mockapi.io/navBar`)
     const data = await res.json()
   console.log(data)
     // Pass data to the page via props
